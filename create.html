@@ -217,7 +217,44 @@ const firebaseConfig = {
   messagingSenderId: "158486034630",
   appId: "1:158486034630:web:8e5b28640833dcf22ebfc7"
 };
+let confirmationResult;
 
+document.getElementById("nextBtn").onclick = function () {
+
+  const phoneNumber = document.getElementById("phone").value;
+
+  firebase.auth().signInWithPhoneNumber(
+    phoneNumber,
+    window.recaptchaVerifier
+  )
+  .then(function (result) {
+      confirmationResult = result;
+      alert("OTP Sent ✅");
+
+      joinScreen.classList.add("hidden");
+      otpScreen.classList.remove("hidden");
+  })
+  .catch(function (error) {
+      alert(error.message);
+  });
+
+};
+document.getElementById("verifyBtn").onclick = function () {
+
+  const code = document.getElementById("otp").value;
+
+  confirmationResult.confirm(code)
+  .then(function (result) {
+      alert("Phone Verified ✅");
+
+      otpScreen.classList.add("hidden");
+      passwordScreen.classList.remove("hidden");
+  })
+  .catch(function (error) {
+      alert("Invalid OTP ❌");
+  });
+
+};
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
