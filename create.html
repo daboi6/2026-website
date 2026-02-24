@@ -155,6 +155,7 @@ button.active{
     <h1>Join KingsBet with your mobile number</h1>
 
     <input type="text" id="phone" placeholder="+233 Mobile Number">
+    <div id="recaptcha-container"></div>
     <button id="nextBtn">Next</button>
 
     <div class="link">
@@ -204,7 +205,26 @@ button.active{
 
 </div>
 
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+
 <script>
+const firebaseConfig = {
+  apiKey: "AIzaSyC-RPfuapLwmF8VDc5g-SJ2MUGPtS20INk",
+  authDomain: "kingsbet-otp.firebaseapp.com",
+  projectId: "kingsbet-otp",
+  storageBucket: "kingsbet-otp.appspot.com",
+  messagingSenderId: "158486034630",
+  appId: "1:158486034630:web:8e5b28640833dcf22ebfc7"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
+window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+  size: 'normal'
+});
+</script>
 // Toggle country dropdown
 function toggleCountries(){
     const list = document.getElementById("countryList");
