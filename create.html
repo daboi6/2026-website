@@ -217,8 +217,20 @@ const firebaseConfig = {
   messagingSenderId: "158486034630",
   appId: "1:158486034630:web:8e5b28640833dcf22ebfc7"
 };
-let confirmationResult;
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
 
+window.onload = function () {
+  window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
+    'recaptcha-container',
+    {
+      size: 'normal'
+    }
+  );
+
+  recaptchaVerifier.render();
+};
+let confirmationResult;
 document.getElementById("nextBtn").onclick = function () {
 
   const phoneNumber = document.getElementById("phone").value;
@@ -235,6 +247,7 @@ document.getElementById("nextBtn").onclick = function () {
       otpScreen.classList.remove("hidden");
   })
   .catch(function (error) {
+    console.log(error)
       alert(error.message);
   });
 
@@ -255,12 +268,6 @@ document.getElementById("verifyBtn").onclick = function () {
   });
 
 };
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-
-window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-  size: 'normal'
-});
 
 // Toggle country dropdown
 function toggleCountries(){
