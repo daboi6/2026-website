@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KingsBet Signup</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#232324;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:50vh;
+}
+.container{
+    width:90%;
+    max-width:380px;
+    position:relative;
+}
+.screen{
+    position:absolute;
+    width:100%;
+    transition:.4s ease;
+}
+.hidden{
+    opacity:0;
+    pointer-events:none;
+    transform:translateX(40px);
+}
+h1{text-align:center;font-size:22px;margin-bottom:20px}
+.top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+.back{cursor:pointer;font-size:20px}
+.country{
+    font-size:14px;
+    color:#aaa;
+    margin-bottom:15px;
+}
+.country span{
+    color:#ffc014;
+    cursor:pointer;
+    margin-left:6px;
+}
+
+/* COUNTRY DROPDOWN */
+.country-list{
+    background:#15123a;
+    border-radius:8px;
+    margin-bottom:15px;
+    display:none;
+    overflow:hidden;
+}
+.country-item{
+    padding:12px;
+    cursor:pointer;
+    border-bottom:1px solid #222;
+}
+.country-item:hover{
+    background:#1f1b4d;
+}
+
+/* INPUT */
+input{
+    width:100%;
+    padding:14px;
+    margin-bottom:15px;
+    border:1px solid #333;
+    border-radius:6px;
+    background:transparent;
+    color:white;
+}
+button{
+    width:100%;
+    padding:14px;
+    background:#8b763e;
+    border:none;
+    border-radius:6px;
+    color:white;
+    cursor:pointer;
+    transition:.3s;
+}
+button.active{
+    background:#ffd814;
+    color:black;
+}
+.link{text-align:center;margin-top:15px}
+.link a{color:#ffc814;text-decoration:none}
+
+/* OTP */
+.otp-box{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:20px;
+}
+.otp-box input{
+    width:55px;
+    height:55px;
+    text-align:center;
+    font-size:22px;
+}
+
+/* PASSWORD */
+.requirements p{
+    font-size:13px;
+    color:#777;
+    margin:6px 0;
+}
+.valid{color:#ffcc14!important}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- JOIN SCREEN -->
+<div class="screen" id="joinScreen">
+
+    <div class="top">
+        <div></div>
+        <div style="font-size:18px;cursor:pointer;">✕</div>
+    </div>
+
+    <div class="country">
+        <span id="flag">🇬🇭</span>
+        <span id="countryName">Ghana</span>
+        <span onclick="toggleCountries()">Change ▾</span>
+    </div>
+
+    <!-- COUNTRY LIST -->
+    <div class="country-list" id="countryList">
+        <div class="country-item" onclick="selectCountry('Ghana','+233')">
+            Ghana (+233)
+        </div>
+        <div class="country-item" onclick="selectCountry('Nigeria','+234')">
+             Nigeria (+234)
+        </div>
+        <div class="country-item" onclick="selectCountry('United States','+1')">
+            United States (+1)
+        </div>
+        <div class="country-item" onclick="selectCountry('United Kingdom','+44')">
+             United Kingdom (+44)
+        </div>
+    </div>
+
+    <h1>Join KingsBet with your mobile number</h1>
+
+    <input type="text" id="phone" placeholder="+233 Mobile Number">
+    <button id="nextBtn">Next</button>
+
+    <div class="link">
+        Already have an account? <a href="login.html">Log In</a>
+    </div>
+</div>
+
+<!-- OTP SCREEN -->
+<div class="screen hidden" id="otpScreen">
+    <div class="top">
+        <div class="back" onclick="goBack('joinScreen')">←</div>
+        <div></div>
+    </div>
+
+    <h1>Enter OTP</h1>
+
+    <div class="otp-box">
+        <input maxlength="1" class="otp">
+        <input maxlength="1" class="otp">
+        <input maxlength="1" class="otp">
+        <input maxlength="1" class="otp">
+    </div>
+
+    <button id="verifyBtn">Verify</button>
+</div>
+
+<!-- PASSWORD SCREEN -->
+<div class="screen hidden" id="passwordScreen">
+    <div class="top">
+        <div class="back" onclick="goBack('otpScreen')">←</div>
+        <div></div>
+    </div>
+
+    <h1>Set Password</h1>
+
+    <input type="password" id="password" placeholder="Password">
+
+    <div class="requirements">
+        <p id="length">✔ 8+ characters</p>
+        <p id="number">✔ one number</p>
+        <p id="lower">✔ one lowercase</p>
+        <p id="upper">✔ one uppercase</p>
+    </div>
+
+    <button id="createBtn"> <a href="index.html">Create Account</a></button>
+</div>
+
+</div>
+
+<script>
+// Toggle country dropdown
+function toggleCountries(){
+    const list = document.getElementById("countryList");
+    list.style.display = list.style.display === "block" ? "none" : "block";
+}
+
+// Select country
+function selectCountry(flag,name,code){
+    document.getElementById("flag").innerText = flag;
+    document.getElementById("countryName").innerText = name;
+    document.getElementById("phone").placeholder = code + " Mobile Number";
+    document.getElementById("countryList").style.display = "none";
+}
+
+// Screen switching
+const joinScreen = document.getElementById("joinScreen");
+const otpScreen = document.getElementById("otpScreen");
+const passwordScreen = document.getElementById("passwordScreen");
+
+document.getElementById("nextBtn").onclick = () => {
+    joinScreen.classList.add("hidden");
+    otpScreen.classList.remove("hidden");
+};
+document.getElementById("verifyBtn").onclick = () => {
+    otpScreen.classList.add("hidden");
+    passwordScreen.classList.remove("hidden");
+};
+function goBack(screen){
+    joinScreen.classList.add("hidden");
+    otpScreen.classList.add("hidden");
+    passwordScreen.classList.add("hidden");
+    document.getElementById(screen).classList.remove("hidden");
+}
+
+// OTP auto move
+const otpInputs = document.querySelectorAll(".otp");
+otpInputs.forEach((input,index)=>{
+    input.addEventListener("input",()=>{
+        if(input.value && index < otpInputs.length-1){
+            otpInputs[index+1].focus();
+        }
+    });
+});
+
+// Password validation
+const passwordInput = document.getElementById("password");
+passwordInput.addEventListener("input",()=>{
+    const val = passwordInput.value;
+    document.getElementById("length").classList.toggle("valid", val.length>=8);
+    document.getElementById("number").classList.toggle("valid", /[0-9]/.test(val));
+    document.getElementById("lower").classList.toggle("valid", /[a-z]/.test(val));
+    document.getElementById("upper").classList.toggle("valid", /[A-Z]/.test(val));
+});
+</script>
+
+</body>
+</html>
