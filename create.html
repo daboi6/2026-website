@@ -256,6 +256,11 @@ document.getElementById("verifyBtn").onclick = function () {
 
   const code = document.getElementById("otp").value;
 
+  if(!confirmationResult) {
+    alert("OTP was not sent properly!");
+    return;
+  }
+  
   confirmationResult.confirm(code)
   .then(function (result) {
       alert("Phone Verified ✅");
